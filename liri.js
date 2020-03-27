@@ -1,15 +1,13 @@
 
 // Required Packages
+var keys = require( "./keys.js" );
 var Spotify = require( 'node-spotify-api' );
 var axios = require( 'axios' )
 
 
 // Required Variables
-var keys = require( "./keys.js" );
 var liriType = process.argv[ 2 ]
 var search = process.argv[ 3 ]
-
-// Spotify
 
 
 // @ts-ignore
@@ -19,9 +17,15 @@ var spotify = new Spotify( {
 } );
 
 
+// go through spotify data to get artist name out of object
+var artistName = function ( artists )
+{
+    return artists.name
+
+}
 
 
-// Spotify Search
+// Spotify Search Function
 
 var getSpotify = function ( songSearch )
 {
@@ -40,13 +44,13 @@ var getSpotify = function ( songSearch )
         for ( var i = 0; i < song.length; i++ )
         {
             console.log( i );
-            // console.log( 'artists: ' + song[ i ].artists.name ) Need to get artist name working
-            console.log( 'Song Name: ' + song[ i ].name )
-            console.log( 'Album Name: ' + song[ i ].album.name )
-            console.log( 'Track Number: ' + song[ i ].track_number )
-            console.log( 'Populairty: ' + song[ i ].popularity )
-            console.log( 'Preview Link: ' + song[ i ].preview_url )
-            console.log( '___________________________________________' )
+            console.log( 'artists: ' + song[ i ].artists.map( artistName ) );
+            console.log( 'Song Name: ' + song[ i ].name );
+            console.log( 'Album Name: ' + song[ i ].album.name );
+            console.log( 'Track Number: ' + song[ i ].track_number );
+            console.log( 'Populairty: ' + song[ i ].popularity );
+            console.log( 'Preview Link: ' + song[ i ].preview_url );
+            console.log( '___________________________________________' );
         }
 
 
@@ -59,7 +63,7 @@ var getSpotify = function ( songSearch )
 
 
 
-
+// Movie Search Function
 var getMovie = function ( movieSearch )
 {
     // @ts-ignore
@@ -115,26 +119,24 @@ var getMovie = function ( movieSearch )
 
 
 
-
-
-
-
-
-// Liri Search Function
 var letsPlay = function ( liriType, search )
 {
-    if ( liriType === 'spotify-this-song' )
+    switch ( liriType )
     {
-        getSpotify( search )
-    }
-    if ( liriType === 'movie-this' )
-    {
-        getMovie( search )
-    } else
-    {
-        console.log( 'LIRI don\'t know that' )
+        case 'spotify-this-song': getSpotify( search )
+
+            break;
+
+        case 'movie-this': getMovie( search )
+
+            break;
+
+        default: console.log( 'LIRI don\'t know that' )
+            break;
     }
 }
+
+
 
 
 letsPlay( liriType, search )
