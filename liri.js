@@ -63,6 +63,7 @@ var getSpotify = function ( songSearch )
 
 
 
+
 // Movie Search Function
 var getMovie = function ( movieSearch )
 {
@@ -70,11 +71,13 @@ var getMovie = function ( movieSearch )
     axios.get( "http://www.omdbapi.com/?t=" + movieSearch + "&y=&plot=short&apikey=" + keys.movieKey ).then(
         function ( response )
         {
-            // console.log( response );
+            // console.log( response )
+            var movieData = JSON.stringify( response.data.Ratings[0].Value )
+            // console.log( movieData )
             console.log( "Movie Title: " + response.data.Title );
             console.log( "Release Year: " + response.data.Year );
             console.log( "IMDB Rating: " + response.data.imdbRating );
-            // console.log( "Rotten Tomatoes Rating: " + response.data.Ratings[ 0 ] );   Need to get Rotten Rating working
+            console.log( "Rotten Tomatoes Rating: " + movieData ); 
             console.log( "Counrty of Production: " + response.data.Country );
             console.log( "Language: " + response.data.Language );
             console.log( "Movie Plot: " + response.data.Plot );
@@ -117,6 +120,51 @@ var getMovie = function ( movieSearch )
 
 
 
+var getBand = function ( bandSearch )
+{
+
+    axios.get( "https://rest.bandsintown.com/artists/" + bandSearch + "/events?app_id=" + keys.bandKey ).then(
+        function ( response )
+        {
+            // console.log( response );
+            var showings = response.data;
+            console.log( showings )
+            var venue = response.data.venue[ 'name' ];
+            console.log( venue )
+
+        } )
+        .catch( function ( error )
+        {
+            if ( error.response )
+            {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log( "---------------Data---------------" );
+                console.log( error.response.data );
+                console.log( "---------------Status---------------" );
+                console.log( error.response.status );
+                console.log( "---------------Status---------------" );
+                console.log( error.response.headers );
+            } else if ( error.request )
+            {
+                // The request was made but no response was received
+                // `error.request` is an object that comes back with details pertaining to the error that occurred.
+                console.log( error.request );
+            } else
+            {
+                // Something happened in setting up the request that triggered an Error
+                console.log( "Error", error.message );
+            }
+            console.log( error.config );
+        } );
+
+
+}
+
+
+
+
+
 
 
 var letsPlay = function ( liriType, search )
@@ -128,6 +176,10 @@ var letsPlay = function ( liriType, search )
             break;
 
         case 'movie-this': getMovie( search )
+
+            break;
+
+        case 'concert-this': getBand( search )
 
             break;
 
