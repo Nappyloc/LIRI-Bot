@@ -3,12 +3,13 @@
 var keys = require( "./keys.js" );
 var Spotify = require( 'node-spotify-api' );
 var axios = require( 'axios' )
-var moment = require('moment');
+var moment = require( 'moment' );
+var fs = require( 'fs' )
 
 
 // Required Variables from node process
-const [node, script, liriType, ...params] = process.argv;
-var search = String(params).replace(/,/g, " ");
+const [ node, script, liriType, ...params ] = process.argv;
+var search = String( params ).replace( /,/g, " " );
 
 
 // @ts-ignore
@@ -55,7 +56,7 @@ var getSpotify = function ( songSearch )
             console.log( '___________________________________________' );
         }
 
-        
+
 
 
 
@@ -129,6 +130,7 @@ var getMovie = function ( movieSearch )
 var getBand = function ( bandSearch )
 {
 
+    // @ts-ignore
     axios.get( "https://rest.bandsintown.com/artists/" + bandSearch + "/events?app_id=" + keys.bandKey ).then(
         function ( response )
         {
@@ -138,11 +140,11 @@ var getBand = function ( bandSearch )
             var showings = response.data
             for ( var i = 0; i < showings.length; i++ )
             {
-                var date = moment( showings[ i ].datetime).format("MM/DD/YY")
+                var date = moment( showings[ i ].datetime ).format( "MM/DD/YY" )
                 console.log( i )
                 console.log( 'Venue: ' + showings[ i ].venue.name )
                 console.log( 'Location: ' + showings[ i ].venue.city + ', ' + showings[ i ].venue.country )
-                console.log( 'Date: ' + date)
+                console.log( 'Date: ' + date )
                 console.log( '_______________________________________' )
             }
 
@@ -181,7 +183,29 @@ var getBand = function ( bandSearch )
 
 
 
-// Liri do-what-it-says Funtion -- To DO --
+// Liri do-what-it-says Function
+var heyLiri = function () 
+{
+    fs.readFile( "random.txt", 'utf8', function ( err, data )
+    {
+        if ( err )
+        {
+            console.error( err )
+            return
+        }
+        var text = data.split( ',' )
+        if ( text.length == 2 )
+        {
+            letsPlay( text[ 0 ], text[ 1 ] )
+        } else if ( text.length == 1 )
+        {
+            letsPlay( text[ 0 ] )
+        }
+
+    } )
+
+
+}
 
 
 
@@ -202,6 +226,10 @@ var letsPlay = function ( liriType, search )
             break;
 
         case 'concert-this': getBand( search )
+
+            break;
+
+        case 'do-what-it-says': heyLiri()
 
             break;
 
