@@ -29,12 +29,14 @@ var artistName = function ( artists )
 
 // Spotify Search Function need to add code to default to "The Sign" by "Ace of Base"
 
-var getSpotify = function ( songSearch )
+var getSpotify = function ()
 {
+    if (params.length === 0) {
+        search = "the sign"
+    }
 
 
-
-    spotify.search( { type: 'track', query: songSearch }, function ( err, data )
+    spotify.search( { type: 'track', query: search }, function ( err, data )
     {
         if ( err )
         {
@@ -217,7 +219,7 @@ var letsPlay = function ( liriType, search )
 {
     switch ( liriType )
     {
-        case 'spotify-this-song': getSpotify( search )
+        case 'spotify-this-song': getSpotify()
 
             break;
 
