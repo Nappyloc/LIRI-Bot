@@ -31,20 +31,28 @@ var artistName = function ( artists )
 
 var getSpotify = function ()
 {
-    if (params.length === 0) {
+
+    // Check to make sure user passed a song name if not default song to the sign
+    if ( params.length === 0 )
+    {
         search = "the sign"
     }
 
 
+    // Spotify search call
     spotify.search( { type: 'track', query: search }, function ( err, data )
     {
+
+        // If error returned
         if ( err )
         {
             return console.log( 'Error occurred: ' + err );
         }
 
-
+        // on Return store data in variable song
         var song = data.tracks.items;
+
+        // Loop through the song data to display results
         for ( var i = 0; i < song.length; i++ )
         {
 
