@@ -27,7 +27,7 @@ var artistName = function ( artists )
 }
 
 
-// Spotify Search Function need to add code to default to "The Sign" by "Ace of Base"
+// Spotify Search Function 
 
 var getSpotify = function ()
 {
