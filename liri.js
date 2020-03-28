@@ -43,6 +43,7 @@ var getSpotify = function ( songSearch )
         var song = data.tracks.items;
         for ( var i = 0; i < song.length; i++ )
         {
+           
             console.log( i );
             console.log( 'artists: ' + song[ i ].artists.map( artistName ) );
             console.log( 'Song Name: ' + song[ i ].name );
@@ -120,17 +121,33 @@ var getMovie = function ( movieSearch )
 
 
 
+var venueName = function ( venue )
+{
+    return venue.name
+
+}
+
+
+
 var getBand = function ( bandSearch )
 {
 
     axios.get( "https://rest.bandsintown.com/artists/" + bandSearch + "/events?app_id=" + keys.bandKey ).then(
         function ( response )
         {
+            
+            
             // console.log( response );
-            var showings = response.data;
-            console.log( showings )
-            var venue = response.data.venue[ 'name' ];
-            console.log( venue )
+            var showings = response.data
+            for ( var i = 0; i < showings.length; i++) {
+                console.log(i)
+                console.log('Venue: ' + showings[i].venue.name)
+                console.log('Location: ' + showings[i].venue.city + ', ' + showings[i].venue.country)
+                console.log('Date: ' + showings[i].datetime )
+                console.log('_______________________________________')
+            }
+            
+           
 
         } )
         .catch( function ( error )
