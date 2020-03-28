@@ -6,9 +6,9 @@ var axios = require( 'axios' )
 var moment = require('moment');
 
 
-// Required Variables -- Need to update search to take all aguments after 3
-var liriType = process.argv[ 2 ]
-var search = process.argv[ 3 ]
+// Required Variables from node process
+const [node, script, liriType, ...params] = process.argv;
+var search = String(params).replace(/,/g, " ");
 
 
 // @ts-ignore
@@ -176,6 +176,12 @@ var getBand = function ( bandSearch )
 
 
 }
+
+
+
+
+
+// Liri do-what-it-says Funtion -- To DO --
 
 
 
