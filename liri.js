@@ -54,7 +54,7 @@ var getSpotify = function ()
         var song = data.tracks.items;
 
         // Loop through the song data to display results
-        for ( var i = 0; i < song.length; i++ )
+        for ( var i = 0; i < 5; i++ )
         {
 
             console.log( i );
@@ -81,6 +81,8 @@ var getSpotify = function ()
 // Movie Search Function
 var getMovie = function ( movieSearch )
 {
+    
+    // Check to see if user passed a search option, if not default to Mr. Nobody
     if ( params.length === 0 )
     {
         movieSearch = "Mr. Nobody"
@@ -147,6 +149,11 @@ var getMovie = function ( movieSearch )
 var getBand = function ( bandSearch )
 {
 
+    if ( params.length === 0 )
+    {
+        bandSearch = "the weekend"
+    }
+    
     // @ts-ignore
     axios.get( "https://rest.bandsintown.com/artists/" + bandSearch + "/events?app_id=" + keys.bandKey ).then(
         function ( response )
@@ -155,10 +162,11 @@ var getBand = function ( bandSearch )
 
 
             var showings = response.data
-            for ( var i = 0; i < showings.length; i++ )
+            for ( var i = 0; i < 10; i++ )
             {
                 var date = moment( showings[ i ].datetime ).format( "MM/DD/YY" )
                 console.log( i )
+                console.log('Band: '+ bandSearch)
                 console.log( 'Venue: ' + showings[ i ].venue.name )
                 console.log( 'Location: ' + showings[ i ].venue.city + ', ' + showings[ i ].venue.country )
                 console.log( 'Date: ' + date )
