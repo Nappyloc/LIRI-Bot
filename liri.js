@@ -1,5 +1,6 @@
 
-// Required Packages
+// Required Packages update funtions to pull all keys from the .env 
+require( 'dotenv' ).config()
 var keys = require( "./keys.js" );
 var Spotify = require( 'node-spotify-api' );
 var axios = require( 'axios' )
@@ -80,6 +81,11 @@ var getSpotify = function ()
 // Movie Search Function
 var getMovie = function ( movieSearch )
 {
+    if ( params.length === 0 )
+    {
+        movieSearch = "Mr. Nobody"
+    }
+
     // @ts-ignore
     axios.get( "http://www.omdbapi.com/?t=" + movieSearch + "&y=&plot=short&apikey=" + keys.movieKey ).then(
         function ( response )
@@ -95,6 +101,7 @@ var getMovie = function ( movieSearch )
             console.log( "Language: " + response.data.Language );
             console.log( "Movie Plot: " + response.data.Plot );
             console.log( "Actors: " + response.data.Actors );
+            console.log( '___________________________________________' );
         } )
         .catch( function ( error )
         {
@@ -246,6 +253,30 @@ var letsPlay = function ( liriType, search )
         default: console.log( 'LIRI don\'t know that' )
             break;
     }
+}
+
+
+
+
+
+var writeLog = function ()
+{
+    fs.open( 'log.text', 'wx', ( err, fd ) =>
+    {
+        if ( err )
+        {
+            if ( err.code === 'EEXIST' )
+            {
+                console.error( 'myfile already exists' );
+                return;
+            }
+
+            throw err;
+        }
+
+        writeMyData( fd );
+
+    } );
 }
 
 
