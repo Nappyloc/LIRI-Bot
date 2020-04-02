@@ -11,6 +11,7 @@ var fs = require( 'fs' )
 // Required Variables from node process
 const [ node, script, liriType, ...params ] = process.argv;
 var search = String( params ).replace( /,/g, " " );
+var divider = "\n___________________________"
 
 
 // @ts-ignore
@@ -257,7 +258,7 @@ var letsPlay = function ( liriType, search )
 // Function to write the search to the log file
 var writeLog = function ( log )
 {
-    fs.appendFile( 'log.txt', log, ( err ) =>
+    fs.appendFile( 'log.txt', divider +  log, ( err ) =>
     {
         if ( err ) throw err;
     } );
