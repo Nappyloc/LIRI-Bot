@@ -57,14 +57,10 @@ var getSpotify = function ()
         for ( var i = 0; i < 5; i++ )
         {
 
-            console.log( i );
-            console.log( 'artists: ' + song[ i ].artists.map( artistName ) );
-            console.log( 'Song Name: ' + song[ i ].name );
-            console.log( 'Album Name: ' + song[ i ].album.name );
-            console.log( 'Track Number: ' + song[ i ].track_number );
-            console.log( 'Populairty: ' + song[ i ].popularity );
-            console.log( 'Preview Link: ' + song[ i ].preview_url );
-            console.log( '___________________________________________' );
+            var log = 'Number: ' + i + '\nArtists: ' + song[ i ].artists.map( artistName ) + '\nSong Name: ' + song[ i ].name + '\nAlbum Name: ' + song[ i ].album.name + '\n Preview Link: ' + song[ i ].preview_url + '\n_________________________';
+            console.log( log )
+            writeLog( log )
+
         }
 
 
@@ -81,7 +77,7 @@ var getSpotify = function ()
 // Movie Search Function
 var getMovie = function ( movieSearch )
 {
-    
+
     // Check to see if user passed a search option, if not default to Mr. Nobody
     if ( params.length === 0 )
     {
@@ -94,16 +90,10 @@ var getMovie = function ( movieSearch )
         {
 
             var movieData = JSON.stringify( response.data.Ratings[ 0 ].Value )
+            var log = "Movie Title: " + response.data.Title + '\nRelease Year: ' + response.data.Year + '\nIMDB Rating: ' + response.data.imdbRating + "\nRotten Tomatoes Rating: " + movieData + "\nCounrty of Production: " + response.data.Country + "\nLanguage: " + response.data.Language + "\nMovie Plot: " + response.data.Plot + "\nActors: " + response.data.Actors + '\n___________________________________________'
+            console.log( log )
+            writeLog( log )
 
-            console.log( "Movie Title: " + response.data.Title );
-            console.log( "Release Year: " + response.data.Year );
-            console.log( "IMDB Rating: " + response.data.imdbRating );
-            console.log( "Rotten Tomatoes Rating: " + movieData );
-            console.log( "Counrty of Production: " + response.data.Country );
-            console.log( "Language: " + response.data.Language );
-            console.log( "Movie Plot: " + response.data.Plot );
-            console.log( "Actors: " + response.data.Actors );
-            console.log( '___________________________________________' );
         } )
         .catch( function ( error )
         {
@@ -153,7 +143,7 @@ var getBand = function ( bandSearch )
     {
         bandSearch = "the weekend"
     }
-    
+
     // @ts-ignore
     axios.get( "https://rest.bandsintown.com/artists/" + bandSearch + "/events?app_id=" + keys.bandKey ).then(
         function ( response )
@@ -165,12 +155,10 @@ var getBand = function ( bandSearch )
             for ( var i = 0; i < 10; i++ )
             {
                 var date = moment( showings[ i ].datetime ).format( "MM/DD/YY" )
-                console.log( i )
-                console.log('Band: '+ bandSearch)
-                console.log( 'Venue: ' + showings[ i ].venue.name )
-                console.log( 'Location: ' + showings[ i ].venue.city + ', ' + showings[ i ].venue.country )
-                console.log( 'Date: ' + date )
-                console.log( '_______________________________________' )
+                var log = 'number: ' + i + '\nBand: ' + bandSearch + '\nVenue: ' + showings[ i ].venue.name + '\nLocation: ' + showings[ i ].venue.city + ', ' + showings[ i ].venue.country + '\nDate: ' + date + '\n_______________________________________'
+                console.log( log )
+                writeLog( log )
+
             }
 
 
@@ -266,25 +254,16 @@ var letsPlay = function ( liriType, search )
 
 
 
-
-var writeLog = function ()
+// Function to write the search to the log file
+var writeLog = function ( log )
 {
-    fs.open( 'log.text', 'wx', ( err, fd ) =>
+    fs.appendFile( 'log.txt', log, ( err ) =>
     {
-        if ( err )
-        {
-            if ( err.code === 'EEXIST' )
-            {
-                console.error( 'myfile already exists' );
-                return;
-            }
-
-            throw err;
-        }
-
-        writeMyData( fd );
-
+        if ( err ) throw err;
     } );
+
+
+
 }
 
 
